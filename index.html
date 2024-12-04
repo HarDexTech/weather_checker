@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="https://th.bing.com/th/id/R.770b805d5c99c7931366c2e84e88f251?rik=TqHsCsZOC8Bnqw&pid=ImgRaw&r=0" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: aquamarine;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: -moz-box;
+  }
+  input {
+    padding: 10px;
+    font-size: 16px;
+    width: 250px;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+    width: 9em;
+    height: 3em;
+    border-radius: 30em;
+    font-size: 15px;
+    font-family: inherit;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  button::before {
+    content: '';
+    width: 0;
+    height: 3em;
+    border-radius: 30em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(to right, #0fd850 10%, #f9f047 100%);
+    transition: .3s ease;
+    display: block;
+    z-index: -1;
+  }
+  
+  button:hover::before {
+    width: 9em;
+  }
+  #weatherDisplay {
+    margin-top: 100px;
+    border-radius: 8px;
+  }
+  input {
+    width: 15em;
+    height: 35px;
+    padding: 2px;
+    font-size: 16px;
+    border: 1px solid #000;
+    border-radius: 10px;
+  }
+  h1 {
+    background-color: #007bff;
+    padding: 0.1em;
+    text-align: center;
+    border-radius: 50px;
+    width: 10em;
+  }
+  </style>
+</head>
+<body>
+<center>
+  <h1>Weather Checker</h1>
+  <input type="text" id="cityInput" placeholder="Enter city name"><p>
+  <button id="searchButton">Search</button>
+  <div id="weatherDisplay"></div>
+</center>
+
+<script>
+  const apiKey = "b38271de5ea96a7eb6ade62088f52c8e";
+    const searchButton = document.getElementById("searchButton");
+    const cityInput = document.getElementById("cityInput");
+    const weatherDisplay = document.getElementById("weatherDisplay");
+
+    searchButton.addEventListener("click", () => {
+      const city = cityInput.value;
+      if (city) {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.cod === 200) {
+              const weatherInfo = `
+                <h2>${data.name}, ${data.sys.country}</h2>
+                <p>Temperature: ${data.main.temp}°C</p>
+                <p>Condition: ${data.weather[0].description}</p>
+                <p>Humidity: ${data.main.humidity}%</p>
+              `;
+              weatherDisplay.innerHTML = weatherInfo;
+            } else {
+              weatherDisplay.innerHTML = `<p>City not found. Try again!</p>`;
+            }
+          })
+          .catch(() => {
+            weatherDisplay.innerHTML = `<p>Something went wrong. Please try again later.</p>`;
+          });
+      } else {
+        weatherDisplay.innerHTML = `<p>Please enter a city name.</p>`;
+      }
+    });
+
+</script>
+</body>
+</html>
