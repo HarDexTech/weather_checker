@@ -6,124 +6,494 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weather App</title>
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;300;400;500;600;700&display=swap");
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    }
+
     body {
-    font-family: Arial, sans-serif;
-    background-color: aquamarine;
-    text-align: center;
-    padding: 20px;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    display: -moz-box;
-  }
-  input {
-    padding: 10px;
-    font-size: 16px;
-    width: 250px;
-  }
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: white;
-    color: black;
-    border: none;
-    cursor: pointer;
-    width: 9em;
-    height: 3em;
-    border-radius: 30em;
-    font-size: 15px;
-    font-family: inherit;
-    border: none;
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
-    z-index: 1;
-    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  button::before {
-    content: '';
-    width: 0;
-    height: 3em;
-    border-radius: 30em;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-image: linear-gradient(to right, #0fd850 10%, #f9f047 100%);
-    transition: .3s ease;
-    display: block;
-    z-index: -1;
-  }
-  
-  button:hover::before {
-    width: 9em;
-  }
-  #weatherDisplay {
-    margin-top: 100px;
-    border-radius: 8px;
-  }
-  input {
-    width: 15em;
-    height: 35px;
-    padding: 2px;
-    font-size: 16px;
-    border: 1px solid #000;
-    border-radius: 10px;
-  }
-  h1 {
-    background-color: #007bff;
-    padding: 0.1em;
-    text-align: center;
-    border-radius: 50px;
-    width: 10em;
-  }
+      background: #CDF4E0;
+      font-family: 'Open Sans', Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .main {
+      width: 90%;
+      max-width: 470px;
+      color: #103c1f;
+      padding: 40px 35px;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      min-height: 30em;
+      background-color: #8ed968;
+      position: relative;
+    }
+
+    .main h1 {
+      text-decoration: wavy;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    .search {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .search input {
+      border: 0;
+      outline: 0;
+      background: #ebfffc;
+      color: #000;
+      padding: 10px 25px;
+      height: 60px;
+      border-radius: 30px;
+      flex: 1;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2),
+        0 15px 30px inset rgba(0, 0, 0, 0.3);
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .search input:focus {
+      box-shadow: 0 15px 30px inset rgba(0, 0, 0, 0.2),
+        0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .search button {
+      border: 0;
+      outline: 0;
+      background: #ebfffc;
+      border-radius: 50%;
+      font-size: 25px;
+      width: 55px;
+      height: 55px;
+      cursor: pointer;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2),
+        0 15px 30px inset rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .search button:hover {
+      box-shadow: 0 15px 30px inset rgba(0, 0, 0, 0.2),
+        0 15px 30px rgba(0, 0, 0, 0.3);
+      transform: scale(0.95);
+    }
+
+    .search button:active {
+      transform: scale(0.9);
+    }
+
+    input::placeholder {
+      color: #666;
+    }
+
+    #weatherDisplay {
+      margin-top: 20px;
+      font-size: 18px;
+      line-height: 1.6;
+      padding: 20px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #weatherDisplay h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    #weatherDisplay p {
+      margin: 8px 0;
+      font-weight: 400;
+    }
+
+    /* Tablet styles (768px and below) */
+    @media screen and (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+
+      .main {
+        width: 95%;
+        max-width: 420px;
+        padding: 35px 30px;
+        margin: 0 auto;
+      }
+
+      .main h1 {
+        font-size: 28px;
+        margin-bottom: 18px;
+      }
+
+      .search {
+        gap: 12px;
+        margin-bottom: 25px;
+      }
+
+      .search input {
+        height: 55px;
+        font-size: 16px;
+        padding: 8px 20px;
+      }
+
+      .search button {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+      }
+
+      #weatherDisplay {
+        font-size: 17px;
+        padding: 18px;
+        min-height: 180px;
+      }
+
+      #weatherDisplay h2 {
+        font-size: 22px;
+        margin-bottom: 12px;
+      }
+    }
+
+    /* Mobile landscape (640px and below) */
+    @media screen and (max-width: 640px) {
+      .main {
+        width: 98%;
+        max-width: 380px;
+        padding: 30px 25px;
+      }
+
+      .main h1 {
+        font-size: 26px;
+        margin-bottom: 16px;
+      }
+
+      .search {
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .search input {
+        height: 50px;
+        font-size: 15px;
+        padding: 8px 18px;
+      }
+
+      .search button {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+      }
+
+      #weatherDisplay {
+        font-size: 16px;
+        padding: 16px;
+        min-height: 160px;
+      }
+
+      #weatherDisplay h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+    }
+
+    /* Small mobile (480px and below) */
+    @media screen and (max-width: 480px) {
+      body {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 30px;
+      }
+
+      .main {
+        width: 100%;
+        max-width: 340px;
+        padding: 25px 20px;
+        min-height: auto;
+      }
+
+      .main h1 {
+        font-size: 24px;
+        margin-bottom: 15px;
+      }
+
+      .search {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .search input {
+        width: 100%;
+        height: 45px;
+        font-size: 14px;
+        padding: 8px 15px;
+      }
+
+      .search button {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+        align-self: center;
+      }
+
+      #weatherDisplay {
+        font-size: 15px;
+        padding: 15px;
+        min-height: 140px;
+        margin-top: 15px;
+      }
+
+      #weatherDisplay h2 {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      #weatherDisplay p {
+        margin: 6px 0;
+      }
+    }
+
+    /* Extra small mobile (360px and below) */
+    @media screen and (max-width: 360px) {
+      .main {
+        max-width: 300px;
+        padding: 20px 15px;
+      }
+
+      .main h1 {
+        font-size: 22px;
+        margin-bottom: 12px;
+      }
+
+      .search input {
+        height: 40px;
+        font-size: 13px;
+        padding: 6px 12px;
+      }
+
+      .search button {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+      }
+
+      #weatherDisplay {
+        font-size: 14px;
+        padding: 12px;
+        min-height: 120px;
+      }
+
+      #weatherDisplay h2 {
+        font-size: 16px;
+        margin-bottom: 6px;
+      }
+
+      #weatherDisplay p {
+        margin: 4px 0;
+      }
+    }
+
+    /* Very small screens (320px and below) */
+    @media screen and (max-width: 320px) {
+      body {
+        padding: 8px;
+        padding-top: 20px;
+      }
+
+      .main {
+        max-width: 280px;
+        padding: 18px 12px;
+      }
+
+      .main h1 {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      .search {
+        gap: 12px;
+      }
+
+      .search input {
+        height: 38px;
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      .search button {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+      }
+
+      #weatherDisplay {
+        font-size: 13px;
+        padding: 10px;
+        min-height: 100px;
+      }
+
+      #weatherDisplay h2 {
+        font-size: 15px;
+        margin-bottom: 5px;
+      }
+    }
+
+    /* Large screens (1200px and above) */
+    @media screen and (min-width: 1200px) {
+      .main {
+        max-width: 520px;
+        padding: 50px 45px;
+      }
+
+      .main h1 {
+        font-size: 34px;
+        margin-bottom: 25px;
+      }
+
+      .search {
+        gap: 20px;
+        margin-bottom: 35px;
+      }
+
+      .search input {
+        height: 65px;
+        font-size: 20px;
+        padding: 12px 30px;
+      }
+
+      .search button {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+      }
+
+      #weatherDisplay {
+        font-size: 20px;
+        padding: 25px;
+        min-height: 220px;
+        margin-top: 25px;
+      }
+
+      #weatherDisplay h2 {
+        font-size: 26px;
+        margin-bottom: 18px;
+      }
+
+      #weatherDisplay p {
+        margin: 10px 0;
+      }
+    }
+
+    /* Landscape orientation for mobile devices */
+    @media screen and (max-height: 500px) and (orientation: landscape) {
+      body {
+        padding: 10px;
+        align-items: center;
+      }
+
+      .main {
+        min-height: auto;
+        padding: 20px 25px;
+      }
+
+      .main h1 {
+        font-size: 22px;
+        margin-bottom: 10px;
+      }
+
+      .search {
+        margin-bottom: 15px;
+      }
+
+      #weatherDisplay {
+        min-height: 100px;
+        padding: 12px;
+        margin-top: 10px;
+      }
+    }
   </style>
 </head>
 <body>
-<center>
-  <h1>Weather Checker</h1>
-  <input type="text" id="cityInput" placeholder="Enter city name"><p>
-  <button id="searchButton">Search</button>
-  <div id="weatherDisplay"></div>
-</center>
+  <div class="main">
+    <h1>Weather Checker</h1>
+    <div class="search">
+      <input type="text" id="cityInput" placeholder="Enter city name">
+      <button id="searchButton">🔍</button>
+    </div> 
+    <div id="weatherDisplay"></div>
+  </div>
 
 <script>
   const apiKey = "b38271de5ea96a7eb6ade62088f52c8e";
-    const searchButton = document.getElementById("searchButton");
-    const cityInput = document.getElementById("cityInput");
-    const weatherDisplay = document.getElementById("weatherDisplay");
+  const searchButton = document.getElementById("searchButton");
+  const cityInput = document.getElementById("cityInput");
+  const weatherDisplay = document.getElementById("weatherDisplay");
 
-    searchButton.addEventListener("click", () => {
-      const city = cityInput.value;
-      if (city) {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.cod === 200) {
-              const weatherInfo = `
-                <h2>${data.name}, ${data.sys.country}</h2>
-                <p>Temperature: ${data.main.temp}°C</p>
-                <p>Condition: ${data.weather[0].description}</p>
-                <p>Humidity: ${data.main.humidity}%</p>
-              `;
-              weatherDisplay.innerHTML = weatherInfo;
-            } else {
-              weatherDisplay.innerHTML = `<p>City not found. Try again!</p>`;
-            }
-          })
-          .catch(() => {
-            weatherDisplay.innerHTML = `<p>Something went wrong. Please try again later.</p>`;
-          });
-      } else {
-        weatherDisplay.innerHTML = `<p>Please enter a city name.</p>`;
-      }
-    });
+  // Add Enter key functionality
+  cityInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      searchWeather();
+    }
+  });
 
+  searchButton.addEventListener("click", searchWeather);
+
+  function searchWeather() {
+    const city = cityInput.value.trim();
+    if (city) {
+      weatherDisplay.innerHTML = '<p>Loading...</p>';
+      
+      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.cod === 200) {
+            const weatherInfo = `
+              <h2>${data.name}, ${data.sys.country}</h2>
+              <p><strong>Temperature:</strong> ${Math.round(data.main.temp)}°C</p>
+              <p><strong>Feels like:</strong> ${Math.round(data.main.feels_like)}°C</p>
+              <p><strong>Condition:</strong> ${data.weather[0].description}</p>
+              <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
+              <p><strong>Wind Speed:</strong> ${data.wind.speed} m/s</p>
+            `;
+            weatherDisplay.innerHTML = weatherInfo;
+          } else {
+            weatherDisplay.innerHTML = `<p>City not found. Please try again!</p>`;
+          }
+        })
+        .catch(() => {
+          weatherDisplay.innerHTML = `<p>Something went wrong. Please try again later.</p>`;
+        });
+    } else {
+      weatherDisplay.innerHTML = `<p>Please enter a city name.</p>`;
+    }
+  }
 </script>
 </body>
 </html>
