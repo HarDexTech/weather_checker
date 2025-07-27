@@ -141,8 +141,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👤 Author
 
 **Your Name**
-- GitHub: [@yourusername](https://github.com/HarDexTech)
-- LinkedIn: [Your LinkedIn](https://www.linkedin.com/in/HarDexTech/)
+- GitHub: [@HarDexTech](https://github.com/HarDexTech)
+- LinkedIn: [Adesina Ayomide](https://www.linkedin.com/in/HarDexTech/)
 - Email: adesinayomide2@gmail.com
 
 ## 🙏 Acknowledgments
